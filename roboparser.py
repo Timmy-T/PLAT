@@ -13,7 +13,6 @@ keyWordList = ["=","+","-","*","/","or","and","~","(",")","<",">","=","!","forwa
 currToken = ""
 currLine = []
 currPos = 0
-errorFlag = False
 
 def getToken():
     global currToken
@@ -29,14 +28,13 @@ def getToken():
     currPos += 1
 
 def isExpression():
-    global errorFlag
     if isSimpleExpression():
         if currToken in relationList:
             getToken()
             if isSimpleExpression():
                 return  True
             else:
-                errorFlag = True
+                quit()
                 return False
         else:
             return True
@@ -44,9 +42,7 @@ def isExpression():
         return False
 
 def isSimpleExpression():
-    global errorFlag
     if isTerm():
-        getToken()
         while(currToken in addList):
             getToken()
             if not isTerm():
@@ -70,8 +66,6 @@ def isTerm():
 
 
 def isFactor():
-    global errorFlag
-
     if isIdentifier():
         return True
     elif isInteger():
@@ -83,13 +77,12 @@ def isFactor():
     elif currToken == "(":
         getToken()
         if isExpression():
-            getToken()
             if currToken == ")":
                 return True
-        errorFlag = True
+        quit()
         return False
     else:
-        errorFlag = True
+        quit()
         return False
 
 def isInteger():
@@ -116,10 +109,10 @@ def isIdentifier():
     else: return False
 
 def isAssignment():
-    global errorFlag
     if isIdentifier():
         getToken()
         if currToken == "is":
+            getToken()
             if isExpression():
                 if currToken == "!":
                     return True
@@ -127,11 +120,10 @@ def isAssignment():
 
 
 def isFwdStatement():
-    global errorFlag
     getToken()
     if currToken == "(":
+        getToken()
         if isExpression():
-            getToken()
             if currToken == ")":
                 getToken()
                 if currToken == "!":
@@ -140,11 +132,10 @@ def isFwdStatement():
 
 
 def isRotStatement():
-    global errorFlag
     getToken()
     if currToken == "(":
+        getToken()
         if isExpression():
-            getToken()
             if currToken == ")":
                 getToken()
                 if currToken == "!":
@@ -154,13 +145,10 @@ def isRotStatement():
 
 
 def isIfStatement():
-    global  errorFlag
-
     getToken()
     if currToken == "(":
         getToken()
         if isExpression():
-            getToken()
             if currToken == ")":
                 if isStatementSequence():
                     getToken()
@@ -177,16 +165,12 @@ def isIfStatement():
 
 
 def isLoopStatement():
-    global errorFlag
-
     getToken()
     if currToken == "(":
         getToken()
         if isExpression():
-            getToken()
             if currToken == ")":
                 if isStatementSequence():
-                    getToken()
                     if currToken == "endw":
                         return True
     return False
@@ -196,7 +180,7 @@ def isStatement():
     getToken()
     if currToken == "if":
         return isIfStatement()
-    elif currToken == "token":
+    elif currToken == "while":
         return isLoopStatement()
     elif currToken == "forward":
         return isFwdStatement()
@@ -209,21 +193,18 @@ def isStatement():
 
 
 def isStatementSequence():
-    global errorFlag
-
     if isStatement():
-        while (isStatement() and not errorFlag):
+        while isStatement():
             pass
         return True
 
     else:
-        errorFlag = True
+        quit()
         return False
 
 def isRoutineDeclaration():
     global currToken
     global currLine
-    global errorFlag
 
     getToken()
 
@@ -236,27 +217,25 @@ def isRoutineDeclaration():
                     if currToken == "blorp":
                         return  True
 
-    errorFlag = True
+
 def isRoutineSequence():
-    global errorFlag
     if isRoutineDeclaration():
-        while(isRoutineDeclaration() and not errorFlag):
+        while isRoutineDeclaration():
             pass
-        if not errorFlag:
-            return True
-        else:
-            return False
+
+        return True
 
     else:
         return False
 
 
-
-
+def quit():
+    print("INVALID")
+    sys.exit()
 
 if __name__== "__main__":
     result = isRoutineSequence()
-    if not errorFlag and not result:
+    if result:
         print("CORRECT")
     else:
         print("INVALID!")

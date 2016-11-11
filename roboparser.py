@@ -73,7 +73,8 @@ def isFactor():
     elif isDecimal():
         return True
     elif currToken == "~":
-        return  isFactor()
+        getToken()
+        return isFactor()
     elif currToken == "(":
         getToken()
         if isExpression():
@@ -151,14 +152,9 @@ def isIfStatement():
         if isExpression():
             if currToken == ")":
                 if isStatementSequence():
-                    getToken()
-                    if currToken == "[":
-                        getToken()
-                        if currToken == "else":
-                            if isStatementSequence():
-                                getToken()
-                                if currToken == "]":
-                                    getToken()
+                    if currToken == "else":
+                        if not isStatementSequence():
+                            quit()
                     if currToken == "endif":
                         return True
     return False

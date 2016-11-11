@@ -21,6 +21,12 @@ def getToken():
 
     if len(currLine) <= currPos:
         line = sys.stdin.readline()
+        while(line.isspace()):
+            try:
+                line = sys.stdin.readline()
+            except EOFError:
+                line = ""
+                break
         currLine = line.strip().split(' ')
         currPos = 0
 
@@ -117,6 +123,7 @@ def isAssignment():
             if isExpression():
                 if currToken == "!":
                     return True
+        quit()
     return False
 
 
@@ -129,7 +136,7 @@ def isFwdStatement():
                 getToken()
                 if currToken == "!":
                     return True
-    return False
+    quit()
 
 
 def isRotStatement():
@@ -141,7 +148,7 @@ def isRotStatement():
                 getToken()
                 if currToken == "!":
                     return True
-    return False
+    quit()
 
 
 
@@ -157,7 +164,9 @@ def isIfStatement():
                             quit()
                     if currToken == "endif":
                         return True
-    return False
+                    else:
+                        quit()
+    quit()
 
 
 def isLoopStatement():
@@ -169,7 +178,9 @@ def isLoopStatement():
                 if isStatementSequence():
                     if currToken == "endw":
                         return True
-    return False
+                    else:
+                        quit()
+    quit()
 
 
 def isStatement():
@@ -194,9 +205,6 @@ def isStatementSequence():
             pass
         return True
 
-    else:
-        quit()
-        return False
 
 def isRoutineDeclaration():
     global currToken
@@ -209,10 +217,10 @@ def isRoutineDeclaration():
         if isIdentifier():
             getToken()
             if currToken == "blip":
-                if isStatementSequence():
-                    if currToken == "blorp":
-                        return  True
-
+                isStatementSequence()
+                if currToken == "blorp":
+                    return  True
+        quit()
 
 def isRoutineSequence():
     if isRoutineDeclaration():

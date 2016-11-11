@@ -1,0 +1,11 @@
+prog gcd
+blip
+    if ( a > b )
+      a is a - b !
+    else
+      b is b - a !
+    endif
+blorp
+
+
+prog dummy blip blorp

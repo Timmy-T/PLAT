@@ -1,0 +1,13 @@
+prog gcd
+blip
+  while ( ~ ( a = b ) )
+    if ( a > b )
+      a is a - b !
+    else
+      b is b - a !
+    endif
+  endw
+blorp
+
+
+prog dummy blip blorp

@@ -1,0 +1,42 @@
+prog square
+blip
+  x is 90 !
+  y is 100 !
+  c is 1 !
+  while ( c < 4 )
+      while ( c # 4 )
+            if ( a > b )
+                rotate ( x ) !
+                c is c + 1 !
+            else
+                b is b - a !
+            endif
+        forward ( y ) !
+        rotate ( x ) !
+        c is c + 1 !
+      endw
+    forward ( y ) !
+    rotate ( x ) !
+    c is c + 1 !
+  endw
+blorp
+
+prog gcd
+blip
+  while ( ~ ( a = b ) )
+    if ( a > b )
+      a is a - b !
+    else
+      b is b - a !
+    endif
+  endw
+blorp
+
+
+prog dummy blip blorp
+
+prog main
+blip
+  x is 2 + 2 !
+  forward ( x * 100 ) !
+blorp

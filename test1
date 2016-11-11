@@ -1,0 +1,5 @@
+prog main
+blip
+  x is 2 + 2 !
+  forward ( x * 100 ) !
+blorp

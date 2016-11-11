@@ -1,0 +1,5 @@
+prog foo ( loop )
+blip blip !
+  x is blorp !
+  forward ( rotate ) !
+if
